@@ -242,9 +242,6 @@ foo <- function(a, b, type) {
 ```
 ]
 
-Also have a look at `rlang::call2`: 
-<https://rlang.r-lib.org/reference/call2.html>
-
 ---
 
 ### Execute function with arguments in a list
