@@ -1,6 +1,6 @@
 ---
-title: "Lessons learned while refactoring {ggstatsplot}"
-subtitle: "Going from 10K to 1.5K lines of code"
+title: "Lessons learned while refactoring {ggstatsplot} 📦"
+subtitle: "Going from 20K to ~1.5K lines of code"
 author: "Indrajeet Patil"
 date: "`r Sys.Date()`"
 output:
@@ -8,7 +8,7 @@ output:
     #self_contained: true
     lib_dir: libs
     nature:
-      highlightStyle: github
+      highlightStyle: "foundation"
       highlightLines: true
       countIncrementalSlides: false
 ---
@@ -41,7 +41,7 @@ xaringanExtra::use_search(show_icon = TRUE)
 
 # Note Before
 
-I put together these slides in a hurry<sup>*</sup>, because (unexpectedly to me) a number of people were curious about this refactoring.
+I put together these slides in a hurry<sup>*</sup>, because (unexpectedly to me) a number of people were curious about refactoring when I tweeted yesterday.
 
 .footnote[<sup>*</sup>I'm on holiday until 31st of August and don't have time to polish these slides further. 😿]
 
@@ -52,10 +52,11 @@ I put together these slides in a hurry<sup>*</sup>, because (unexpectedly to me)
 class: inverse, center, middle
 
 # Prologue
+The Unbearable Heaviness of Software
 
 ---
 
-### What does `{ggstatsplot}` do?
+### What does the software do?
 
 You don't need to know much about `{ggstatsplot}` to follow these slides, except that it produces `ggplot2` plots with statistical analysis embedded in the plot. For more, see these [slides](https://indrajeetpatil.github.io/ggstatsplot_slides/slides/ggstatsplot_presentation.html#1). Here is an example plot:
 
@@ -71,7 +72,7 @@ ggbetweenstats(penguins, species, flipper_length_mm,
 
 ---
 
-### State of codebase in 2019
+### State of codebase in 2019: > 20K lines of code 🙀
 
 <blockquote class="twitter-tweet" data-theme="dark"><p lang="en" dir="ltr">What is the state of the ggplot2 package ecosystem?<br><br>There are 120k lines of R code (!) across ggplot2 and its 40+ extensions at <a href="https://t.co/DJCdhDTJo0">https://t.co/DJCdhDTJo0</a><br><br>ggstatsplot &amp; ggplot2 make up 1/3 of the total.<br><br>My package, ggdark, is the 4th smallest. 🙂<a href="https://twitter.com/hashtag/tidytuesday?src=hash&amp;ref_src=twsrc%5Etfw">#tidytuesday</a> <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a> <a href="https://twitter.com/hashtag/dataviz?src=hash&amp;ref_src=twsrc%5Etfw">#dataviz</a> <a href="https://t.co/FVbg8vROte">pic.twitter.com/FVbg8vROte</a></p>&mdash; Neal Grantham 🆖 (@nsgrantham) <a href="https://twitter.com/nsgrantham/status/1194676877425725440?ref_src=twsrc%5Etfw">November 13, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
@@ -83,32 +84,48 @@ ggbetweenstats(penguins, species, flipper_length_mm,
 - Adding new features becomes difficult
 
 > *The goal of software architecture is to minimize the human resources required to build and maintain the required system.*
-Robert C. Martin (*Clean Architecture*, p.5)
+>
+> -- Robert C. Martin (*Clean Architecture*, p.5)
 
-### "What does refactoring get you?"
+### "What does refactoring<sup>*</sup> get you?"
 
 - Forces you to think about design patterns in your code
 - Improves the code you will write in the future
+
+.footnote[<sup>*</sup>refactoring: restructuring code without changing its external behavior]
+
+I am deliberately being terse here since these slides are about *how* I refactored the code, rather than *why* I did so.
 
 ---
 
 class: inverse, center, middle
 
 # Preconditions
+"Big things have small beginnings"
 
 ---
 
-# Three things to do before refactoring
+# Unit tests
 
 --
-1. 100 % code coverage<br>
+Three things to do before refactoring<br>
+<br>
 --
-2. 100 % code coverage<br>
+**100 % code coverage**<br>
 --
-3. 100 % code coverage<br>
+**100 % code coverage**<br>
+--
+**100 % code coverage**<br>
 --
 <br>
-Try your absolute best to *break* your own code and add tests for every instance
+
+Start with unit tests and check if literally every line of code is doing its job properly.
+
+Try your absolute best to [*break* your own code](https://en.wikipedia.org/wiki/Defensive_programming) and add unit tests for every instance of corner case you or the users may find. 
+
+Now you can start refactoring<sup>*</sup>!
+
+.footnote[<sup>*</sup>Needless to say, it's a good practice to do refactoring in a separate branch and then make a pull-request to the `master`/`main` branch. This will protect you from `commit`-ing code that inadvertently changes software behavior.]
 
 ---
 
@@ -120,11 +137,26 @@ class: inverse, center, middle
 
 ### DRYing `{ggstatsplot}`
 
-DRY or Don't repeat yourself [principle](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) dictates reducing repetition of software patterns and replacing it with abstractions to avoid redundancy.
+DRY or Don't repeat yourself [principle](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) dictates reducing repetition of software patterns by replacing it with abstractions.
 
 During refactoring:
 
-- Code that was repeated even twice was abstracted into its own helper function.
+- Code repeated even **twice** was abstracted out into its own helper function.
+
+- Inside function body, all unnecessary assignments were avoided. A new object was created only if it was used in more than one place.
+
+```{r, eval=FALSE}
+# before: 4 lines of code
+x_vec <- data %>% dplyr::pull({{ x }})
+x_bw <- (max(x_vec) - min(x_vec)) / sqrt(length(x_vec))
+y_vec <- data %>% dplyr::pull({{ y }})
+y_bw <- (max(y_vec) - min(y_vec)) / sqrt(length(y_vec))
+
+# after: 3 lines of code
+.binwidth <- function(x) (max(x) - min(x)) / sqrt(length(x))
+x_bw <- .binwidth(data %>% dplyr::pull({{ x }}))
+y_bw <- .binwidth(data %>% dplyr::pull({{ y }}))
+```
 
 ---
 
@@ -134,15 +166,15 @@ class: inverse, center, middle
 
 ---
 
-### Don't reinvent wheel
+### Don't reinvent the wheel
 
-- Resist temptation to duplicate efforts by writing functions for doing things that other packages already do, unless, of course, the whole point of the package is to (e.g.) provide a more performant alterantive. Yes, you should be cautious about number of dependencies, but that's not the *only* thing you should worry about. I'd highly recommend [this talk](https://www.youtube.com/watch?v=mum13N7CGUI&ab_channel=RStudio) by Jim Hester to better understand this trade-off.
+- Resist temptation to duplicate efforts by writing functions for doing things that other packages already do, unless, of course, the whole point of the package is to (e.g.) provide an alternative with better performance. Yes, you should be cautious about number of dependencies, but that's not the *only* thing you should worry about. I'd highly recommend this excellent [talk](https://www.youtube.com/watch?v=mum13N7CGUI&ab_channel=RStudio) by Jim Hester to better understand this trade-off.
 
-- Instead choose a dependency and use its functionality. If it is missing features you desire, instead of adding them in your own software, contribute to the dependency itself.
+- Instead carefully choose a dependency to rely on. If it is missing features you desire, instead of adding them in your own software, contribute to the dependency itself. Not only does this make your software lighter, your contributed code could now be useful for other reverse dependencies.
  
-- For example, `{ggstatsplot}` used to have custom functions to compute confidence intervals for effect sizes but all of these were removed in favor an [excellent package](https://easystats.github.io/effectsize/) dedicated to computing effect sizes and their confidence intervals.
+- For example, `{ggstatsplot}` used to have custom functions to compute confidence intervals for effect sizes. All of them were replaced by relying on [effectsize](https://easystats.github.io/effectsize/) or by moving some to [`WRS2`](https://cran.r-project.org/web/packages/WRS2/index.html).
 
-- At this point, I am either co-author or contributor on a number of `ggstatsplot`'s hard dependencies.
+- By this point, I am either co-author or contributor on a quarter of `ggstatsplot`'s hard dependencies.
 
 ---
 
@@ -152,27 +184,28 @@ class: inverse, center, middle
 
 ---
 
+### Assigning functions to variables
+
 R is a [functional language](https://adv-r.hadley.nz/fp.html) and you can take advantage of that.
 
-For example, while writing functions, you can assign functions to variables. Note also that this gets rid of repeated function arguments specification. 
+For example, you can assign functions to variables. 
+Note that this also makes it unnecessary to repeat oneself while specifying common arguments to different functions.
 
 .pull-left[
 ```{r, eval=FALSE}
-# before: 14 lines of code
-foo <- function(a, b, type, ...) {
+# before: 12 lines of code
+foo <- function(a, b, type) {
   if (type == "p") {
-    return(stats::t.test(
+    return(t.test(
       x = a,
-      y = b,
-      ...
+      y = b
     ))
   }
 
   if (type == "np") {
-    return(stats::wilcox.test(
+    return(wilcox.test(
       x = a,
-      y = b,
-      ...
+      y = b
     ))
   }
 }
@@ -181,17 +214,58 @@ foo <- function(a, b, type, ...) {
 
 .pull-right[
 ```{r, eval=FALSE}
-# after: 8 lines of code
-foo <- function(a, b, type, ...) {
-  if (type == "p") .f <- stats::t.test
-  if (type == "np") .f <- stats::wilcox.test
+# after: 7 lines of code
+foo <- function(a, b, type) {
+  if (type == "p") .f <- t.test
+  if (type == "np") .f <- wilcox.test
 
   return(rlang::exec(
     .f,
     x = a,
-    y = b,
-    ...
+    y = b
   ))
+}
+```
+]
+
+Also have a look at `rlang::call2`: 
+<https://rlang.r-lib.org/reference/call2.html>
+
+---
+
+### Execute function with arguments in a list
+
+If a used function has a large number of arguments that you wish the user could specify, instead of specifying them *individually*, you can instead store them in a `list` and then internally splice (`!!!`) it.
+
+.pull-left[
+```{r, eval=FALSE}
+# before: 8 lines of code
+foo <- function(data) {
+  ggplot(data, aes(wt, mpg)) +
+    geom_point(
+      size = 3,
+      color = "red",
+      stroke = 0,
+      alpha = 0.5,
+      na.rm = TRUE
+    )
+}
+```
+]
+
+.pull-right[
+```{r, eval=FALSE}
+# after: 2 lines of code
+foo <- function(data,
+                point.args = list(
+                  size = 3,
+                  color = "red",
+                  stroke = 0,
+                  alpha = 0.5,
+                  na.rm = TRUE
+                )) {
+  ggplot(data, aes(wt, mpg)) +
+    exec(geom_point, !!!point.args)
 }
 ```
 
@@ -203,7 +277,7 @@ class: inverse, center, middle
 
 # Getting carried away
 
-The following might be considered **bad coding practices** by some practitioners because they reduce readability of the code, especially for contributors. But I'd still like to mention them for the sake of completeness.
+The following might be considered **bad coding practices** by some practitioners because they reduce readability of the code. I don't, so I've included them for the sake of completeness.
 
 ---
 
@@ -245,11 +319,13 @@ Struggles that define you
 
 ---
 
-### "Why didn't you use these methods when you started writing the package?"
+### "Why didn't you use these methods in the beginning?"
 
-- Started *learning* R in January 2017 and started working on `{ggstatsplot}` in Oct/Nov 2017, so did not have much experience with R itself.
+- Started *learning* R in January 2017 and started working on `{ggstatsplot}` in October/November 2017, so did not have much experience with R to use advanced techiques like functional programming.
 
-- Trained in Physics and then worked as a researcher in Social Neuroscience and Social Psychology, which means no formal computer science or software development training. Needed to make these mistakes to learn these lessons the hard way.
+- Trained in Physics and then worked as a researcher in Social Neuroscience and Social Psychology, which means no formal education or training<sup>*</sup> in Computer Science or Software Development. Needed to make these mistakes to learn these lessons the hard way.
+
+.footnote[<sup>*</sup>If you are someone with formal training in these subjects and find any of the methods/principles discussed here are a bad idea, instead of a subtweet or a snide remark, I'd appreciate if you can file an issue (<https://github.com/IndrajeetPatil/Refactoring-ggstatsplot/issues>), so that I can flag the respective content with a warning.]
 
 ---
 
@@ -259,29 +335,66 @@ class: inverse, center, middle
 
 ---
 
-# Tools
+### Tools
 
 None of this would have been possible without the following excellent tools/services:
 
+- `testthat`: <https://testthat.r-lib.org/>
+- `vdiffr`: <https://vdiffr.r-lib.org/>
 - `covr`: <https://covr.r-lib.org/>
 - `codecov`: <https://about.codecov.io/>
 - `lintr`: <https://github.com/jimhester/lintr/blob/master/README.md>
 - `github-actions`: <https://github.com/r-lib/actions>
+- `styler`: <https://styler.r-lib.org/>
 - `travis-ci`<sup>*</sup>: <https://travis-ci.com/>
 - `appveyor`<sup>*</sup>: <https://www.appveyor.com/>
 
-.footnote[<sup>*</sup>I don't use these anymore in favor of github-actions, but before github-actions arrived on the scene, these CI services were essential part of my workflow.]
+.footnote[<sup>*</sup>I don't use these anymore in favor of github-actions, but before github-actions arrived on the scene, these continuous integration services were essential part of my workflow.]
 
 ---
 
-# Videos
+### Videos
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/7oyiPBjLAWY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="400" height="315" src="https://www.youtube.com/embed/7oyiPBjLAWY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="400" height="315" src="https://www.youtube.com/embed/D4auWwMsEnY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ---
 
-# Books
+### Books
 
 ```{r, echo=FALSE}
 knitr::include_graphics("images/books.jpeg")
 ```
+
+---
+
+layout: false
+
+class: inverse, center, middle
+
+# Find me at...
+
+.font100[
+
+[`r emo::ji("bird")` @patilindrajeets](http://twitter.com/patilindrajeets)
+
+[`r emo::ji("computer")` @IndrajeetPatil](http://github.com/IndrajeetPatil)  
+
+[`r emo::ji("link")` https://sites.google.com/site/indrajeetspatilmorality/](https://sites.google.com/site/indrajeetspatilmorality/)  
+
+[`r emo::ji("mail")` patilindrajeet.science@gmail.com](mailto:patilindrajeet.science@gmail.com)
+
+]
+
+---
+
+layout: false
+
+class: inverse, center, middle
+
+# The End 👋
+
+To access code for these slides, see-
+
+<https://github.com/IndrajeetPatil/Refactoring-ggstatsplot/>

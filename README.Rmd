@@ -1,0 +1,18 @@
+---
+output: github_document
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+# Refactoring `{ggstatsplot}`
+
+Slides on lessons learned while refactoring `{ggstatsplot}` [package](https://indrajeetpatil.github.io/ggstatsplot/).
+
+The slides can be found here:
