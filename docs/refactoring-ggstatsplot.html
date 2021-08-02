@@ -29,17 +29,6 @@ class: center, middle, inverse, title-slide
 
 
 
-&lt;style type="text/css"&gt;
-.remark-code {
-  font-size: 0.7em;
-}
-
-.remark-code, .remark-inline-code {
-  font-family: 'JetBrainsMono-Regular';
-}
-&lt;/style&gt;
-
-
 ### Note Before
 
 I put together these slides in a hurry&lt;sup&gt;*&lt;/sup&gt; because (unexpectedly to me) a number of people were curious about refactoring when I tweeted yesterday.
@@ -61,7 +50,7 @@ The Unbearable Heaviness of Software
 
 You don't need to know much about `{ggstatsplot}` to follow these slides, except that it produces `ggplot2` plots with statistical analysis embedded in the plot. For more information, see these [slides](https://indrajeetpatil.github.io/ggstatsplot_slides/slides/ggstatsplot_presentation.html#1). Here is an example plot:
 
-&lt;img src="refactoring-ggstatsplot_files/figure-html/unnamed-chunk-2-1.png" width="60%" /&gt;
+&lt;img src="refactoring-ggstatsplot_files/figure-html/unnamed-chunk-1-1.png" width="60%" /&gt;
 
 ---
 
@@ -161,18 +150,6 @@ East India Company style of coding
 
 ---
 
-### Don't reinvent the wheel
-
-- Resist temptation to duplicate efforts by writing functions for doing things that other packages already do, unless, of course, the whole point of the package is to (e.g.) provide an alternative with better performance. Yes, you should be cautious about number of dependencies, but that's not the *only* thing you should worry about. I'd highly recommend this excellent [talk](https://www.youtube.com/watch?v=mum13N7CGUI&amp;ab_channel=RStudio) by Jim Hester to better understand this trade-off.
-
-- Instead carefully choose a dependency to rely on. If it is missing features you desire, instead of adding them in your own software, contribute to the dependency itself. Not only does this make your software lighter, your contributed code could now be useful for other reverse dependencies.
- 
-- For example, `{ggstatsplot}` used to have custom functions to compute confidence intervals for effect sizes. All of them were replaced by relying on [effectsize](https://easystats.github.io/effectsize/) or by moving some to [`WRS2`](https://cran.r-project.org/web/packages/WRS2/index.html).
-
-- By this point, I am either co-author or contributor on a quarter of `ggstatsplot`'s hard dependencies.
-
----
-
 ### Break a big package into smaller packages
 
 To facilitate maintenance of the package, it was broken into two packages-
@@ -182,6 +159,18 @@ To facilitate maintenance of the package, it was broken into two packages-
 This makes adding new functionality much easier, since graphical functions can be prepared even if statistical backend isn't ready, and vice versa.
 
 &lt;img src="images/ecosystem.jpeg" width="70%" /&gt;
+
+---
+
+### Don't reinvent, borrow smaller wheels
+
+- Resist temptation to duplicate efforts by writing functions for doing things that other packages already do, unless, of course, the whole point of the package is to (e.g.) provide an alternative with better performance. Yes, you should be cautious about number of dependencies, but that's not the *only* thing you should worry about. I'd highly recommend this excellent [talk](https://www.youtube.com/watch?v=mum13N7CGUI&amp;ab_channel=RStudio) by Jim Hester to better understand trade-offs involved.
+
+- Instead carefully choose a dependency to rely on. If it is missing features you desire, instead of adding them in your own software, contribute to the dependency itself. Not only does this make your software lighter, your contributed code could now be useful for other reverse dependencies.
+ 
+- For example, `{ggstatsplot}` used to have custom functions to compute confidence intervals for effect sizes. All of them were replaced by relying on [effectsize](https://easystats.github.io/effectsize/) or by moving some to [`WRS2`](https://cran.r-project.org/web/packages/WRS2/index.html).
+
+- By this point, I am either co-author or contributor on a quarter of `ggstatsplot`'s hard dependencies.
 
 ---
 
@@ -288,7 +277,7 @@ class: inverse, center, middle
 
 # Getting carried away
 
-The following might be considered **bad coding practices** by some practitioners because they reduce readability of the code. I don't, so I've included them for the sake of completeness.
+The following might be considered **bad coding practices** by some practitioners because they reduce code readability. I don't, so I've included them for the sake of completeness.
 
 ---
 
@@ -302,7 +291,7 @@ See: &lt;https://magrittr.tidyverse.org/reference/compound.html&gt;
 df &lt;- df %&gt;%
   mutate(c = a + b)
 
-# after: a single like of code
+# after: 1 line of code
 df %&lt;&gt;% mutate(c = a + b)
 ```
 
@@ -368,9 +357,9 @@ None of this would have been possible without the following excellent tools/serv
 
 ### Videos
 
-&lt;iframe width="400" height="315" src="https://www.youtube.com/embed/7oyiPBjLAWY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+&lt;iframe width="400" height="280" src="https://www.youtube.com/embed/7oyiPBjLAWY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
 
-&lt;iframe width="400" height="315" src="https://www.youtube.com/embed/D4auWwMsEnY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+&lt;iframe width="400" height="280" src="https://www.youtube.com/embed/D4auWwMsEnY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
 
 ---
 
@@ -394,7 +383,7 @@ class: inverse, center, middle
 
 [🔗 https://sites.google.com/site/indrajeetspatilmorality/](https://sites.google.com/site/indrajeetspatilmorality/)  
 
-[📨 patilindrajeet.science@gmail.com](mailto:patilindrajeet.science@gmail.com)
+[📪 patilindrajeet.science@gmail.com](mailto:patilindrajeet.science@gmail.com)
 
 ]
 
