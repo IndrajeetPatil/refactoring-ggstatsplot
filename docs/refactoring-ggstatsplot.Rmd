@@ -39,9 +39,9 @@ xaringanExtra::use_search(show_icon = TRUE)
 ```
 
 
-# Note Before
+### Note Before
 
-I put together these slides in a hurry<sup>*</sup>, because (unexpectedly to me) a number of people were curious about refactoring when I tweeted yesterday.
+I put together these slides in a hurry<sup>*</sup> because (unexpectedly to me) a number of people were curious about refactoring when I tweeted yesterday.
 
 .footnote[<sup>*</sup>I'm on holiday until 31st of August and don't have time to polish these slides further. 😿]
 
@@ -58,7 +58,7 @@ The Unbearable Heaviness of Software
 
 ### What does the software do?
 
-You don't need to know much about `{ggstatsplot}` to follow these slides, except that it produces `ggplot2` plots with statistical analysis embedded in the plot. For more, see these [slides](https://indrajeetpatil.github.io/ggstatsplot_slides/slides/ggstatsplot_presentation.html#1). Here is an example plot:
+You don't need to know much about `{ggstatsplot}` to follow these slides, except that it produces `ggplot2` plots with statistical analysis embedded in the plot. For more information, see these [slides](https://indrajeetpatil.github.io/ggstatsplot_slides/slides/ggstatsplot_presentation.html#1). Here is an example plot:
 
 ```{r, echo=FALSE, out.width="60%", fig.width=8}
 library(ggstatsplot)
@@ -94,7 +94,7 @@ ggbetweenstats(penguins, species, flipper_length_mm,
 
 .footnote[<sup>*</sup>refactoring: restructuring code without changing its external behavior]
 
-I am deliberately being terse here since these slides are about *how* I refactored the code, rather than *why* I did so.
+I am deliberately being terse here since these slides are about *how* I refactored the code, rather than *why*.
 
 ---
 
@@ -123,7 +123,7 @@ Start with unit tests and check if literally every line of code is doing its job
 
 Try your absolute best to [*break* your own code](https://en.wikipedia.org/wiki/Defensive_programming) and add unit tests for every instance of corner case you or the users may find. 
 
-Now you can start refactoring<sup>*</sup>!
+*Now* you can start refactoring<sup>*</sup>!
 
 .footnote[<sup>*</sup>Needless to say, it's a good practice to do refactoring in a separate branch and then make a pull-request to the `master`/`main` branch. This will protect you from `commit`-ing code that inadvertently changes software behavior.]
 
@@ -163,6 +163,7 @@ y_bw <- .binwidth(data %>% dplyr::pull({{ y }}))
 class: inverse, center, middle
 
 # Divide and conquer
+East India Company style of coding
 
 ---
 
@@ -175,6 +176,20 @@ class: inverse, center, middle
 - For example, `{ggstatsplot}` used to have custom functions to compute confidence intervals for effect sizes. All of them were replaced by relying on [effectsize](https://easystats.github.io/effectsize/) or by moving some to [`WRS2`](https://cran.r-project.org/web/packages/WRS2/index.html).
 
 - By this point, I am either co-author or contributor on a quarter of `ggstatsplot`'s hard dependencies.
+
+---
+
+### Break a big package into smaller packages
+
+To facilitate maintenance of the package, it was broken into two packages-
+- [`ggstatsplot`](https://indrajeetpatil.github.io/ggstatsplot/): all things **graphics**
+- [`statsExpressions`](https://indrajeetpatil.github.io/statsExpressions/): all things **statistics**
+
+This makes adding new functionality much easier, since graphical functions can be prepared even if statistical backend isn't ready, and vice versa.
+
+```{r, echo=FALSE, out.width="70%"}
+knitr::include_graphics("images/ecosystem.jpeg")
+```
 
 ---
 
