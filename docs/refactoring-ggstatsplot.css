@@ -5,3 +5,9 @@
 .remark-code, .remark-inline-code {
   font-family: 'JetBrainsMono-Regular';
 }
+
+
+body {
+  font-size: 1.1em;
+  font-family: 'RobotoCondensed-Light';
+}
