@@ -305,8 +305,6 @@ df <- df %>%
 df %<>% mutate(c = a + b)
 ```
 
----
-
 ### Multiple assignment using `%<-%`
 
 See: <https://rdrr.io/cran/zeallot/man/operator.html>
