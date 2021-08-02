@@ -153,6 +153,52 @@ y_bw &lt;- .binwidth(data %&gt;% dplyr::pull({{ y }}))
 
 ---
 
+### Avoid conditional hell
+
+As much as possible, don't use complex, nested conditional statements.
+
+&gt; *"There is no else, there is only if."*
+&gt;
+&gt; - Jenny Bryan (paraphrasing Yoda)
+
+.pull-left[
+
+```r
+# before: 7 lines of code
+if (type == "p") {
+  if (paired) {
+    test &lt;- "Student's t"
+  } else {
+    test &lt;- "Welch's t"
+  }
+}
+```
+]
+
+.pull-right[
+
+```r
+# take-1
+# after: 4 lines of code
+if (type == "p") {
+  if (paired) test &lt;- "Student's t"
+  if (!paired) test &lt;- "Welch's t"
+}
+```
+]
+
+But, `ifelse` is fine!
+
+
+```r
+# take-2
+# after: 1 line of code
+if (type == "p") test &lt;- ifelse(paired, "Student's t", "Welch's t")
+```
+
+
+---
+
 class: inverse, center, middle
 
 # Divide and conquer
