@@ -238,27 +238,28 @@ class: inverse, center, middle
 
 ### Assigning functions to variables
 
-R is a [functional language](https://adv-r.hadley.nz/fp.html) and you can take advantage of that.
-
-For example, you can assign functions to variables. 
-Note that this also makes it unnecessary to repeat oneself while specifying common arguments to different functions.
+R is a [functional language](https://adv-r.hadley.nz/fp.html) and you can take advantage of that. For example, you can assign functions to variables. 
 
 .pull-left[
 
 ```r
-# before: 12 lines of code
+# before: 15 lines of code
 foo &lt;- function(a, b, type) {
+  stopifnot(type %in% c("p", "np"))
+
   if (type == "p") {
     return(t.test(
       x = a,
-      y = b
+      y = b,
+      paired = FALSE
     ))
   }
 
   if (type == "np") {
     return(wilcox.test(
       x = a,
-      y = b
+      y = b,
+      paired = FALSE
     ))
   }
 }
@@ -268,15 +269,20 @@ foo &lt;- function(a, b, type) {
 .pull-right[
 
 ```r
-# after: 7 lines of code
+# after: 10 lines of code
 foo &lt;- function(a, b, type) {
+  stopifnot(type %in% c("p", "np"))
+
   if (type == "p") .f &lt;- t.test
   if (type == "np") .f &lt;- wilcox.test
+  # additional arguments to functions
+  .f.args &lt;- list(paired = FALSE)
 
   return(rlang::exec(
     .f,
     x = a,
-    y = b
+    y = b,
+    !!!.f.args
   ))
 }
 ```
@@ -434,7 +440,7 @@ class: inverse, center, middle
 
 [🔗 https://sites.google.com/site/indrajeetspatilmorality/](https://sites.google.com/site/indrajeetspatilmorality/)  
 
-[📧 patilindrajeet.science@gmail.com](mailto:patilindrajeet.science@gmail.com)
+[📭 patilindrajeet.science@gmail.com](mailto:patilindrajeet.science@gmail.com)
 
 ]
 
