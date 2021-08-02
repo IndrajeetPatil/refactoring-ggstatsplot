@@ -28,6 +28,16 @@ options(htmltools.dir.version = FALSE)
 xaringanExtra::use_search(show_icon = TRUE)
 ```
 
+```{css, echo=FALSE}
+.remark-code {
+  font-size: 0.7em;
+}
+
+.remark-code, .remark-inline-code {
+  font-family: 'JetBrainsMono-Regular';
+}
+```
+
 ### Note Before
 
 I put together these slides in a hurry<sup>*</sup> because (unexpectedly to me) a number of people were curious about refactoring when I tweeted yesterday.
