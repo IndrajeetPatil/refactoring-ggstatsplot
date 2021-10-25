@@ -5,8 +5,8 @@ author: "Indrajeet Patil"
 date: "`r Sys.Date()`"
 output:
   xaringan::moon_reader:
-    #self_contained: true
     lib_dir: libs
+    css: ["default", "refactoring-ggstatsplot.css"]
     nature:
       highlightStyle: "foundation"
       highlightLines: true
@@ -29,13 +29,13 @@ xaringanExtra::use_search(show_icon = TRUE)
 ```
 
 ```{css, echo=FALSE}
-.remark-code {
-  font-size: 0.7em;
-}
-
-.remark-code, .remark-inline-code {
-  font-family: 'JetBrainsMono-Regular';
-}
+# .remark-code {
+#   font-size: 0.7em;
+# }
+# 
+# .remark-code, .remark-inline-code {
+#   font-family: 'JetBrainsMono-Regular';
+# }
 ```
 
 # Prologue
