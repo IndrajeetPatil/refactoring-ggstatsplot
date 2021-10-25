@@ -38,19 +38,8 @@ xaringanExtra::use_search(show_icon = TRUE)
 }
 ```
 
-### Note Before
-
-I put together these slides in a hurry<sup>*</sup> because (unexpectedly to me) a number of people were curious about refactoring when I tweeted yesterday.
-
-.footnote[<sup>*</sup>I'm on holiday until 31st of August and don't have time to polish these slides further. 😿]
-
-<blockquote class="twitter-tweet" data-theme="dark"><p lang="en" dir="ltr">{ggstatsplot}&#39;s codebase was &gt; 10,000 lines of code 2 yrs ago. Since then, I&#39;ve slowly, painfully, and painstakingly refactored it without compromising on functionality.<br><br>And now it&#39;s only ~ 1,600 lines of code!<br><br>Refactoring code is a strangely rewarding (and additive) process 🙃</p>&mdash; Indrajeet Patil (@patilindrajeets) <a href="https://twitter.com/patilindrajeets/status/1421844249277091842?ref_src=twsrc%5Etfw">August 1, 2021</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
----
-
-class: inverse, center, middle
-
 # Prologue
+
 The Unbearable Heaviness of Software
 
 ---
