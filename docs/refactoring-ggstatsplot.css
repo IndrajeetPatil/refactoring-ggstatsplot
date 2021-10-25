@@ -3,16 +3,17 @@
 
 body {
   font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 400;
+  /*font-weight: 400;*/
 }
 
 h1, h2, h3, h4, .h1, .h2, .h3, .h4 {
   font-family: Lato, "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 700;
+  /*font-weight: 700;*/
 }
 
 pre, code {
   font-family: "Fira Code", Consolas, Inconsolata, monospace;
+  font-size: 0.7em;
 }
 
 /*

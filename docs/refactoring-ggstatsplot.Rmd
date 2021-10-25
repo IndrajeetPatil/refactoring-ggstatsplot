@@ -28,16 +28,6 @@ options(htmltools.dir.version = FALSE)
 xaringanExtra::use_search(show_icon = TRUE)
 ```
 
-```{css, echo=FALSE}
-# .remark-code {
-#   font-size: 0.7em;
-# }
-# 
-# .remark-code, .remark-inline-code {
-#   font-family: 'JetBrainsMono-Regular';
-# }
-```
-
 # Prologue
 
 The Unbearable Heaviness of Software
@@ -372,7 +362,7 @@ Struggles that define you
 
 - Trained in Physics and then worked as a researcher in Social Neuroscience and Social Psychology, which means no formal education or training<sup>*</sup> in Computer Science or Software Development. Needed to make these mistakes to learn these lessons the hard way.
 
-.footnote[<sup>*</sup>If you are someone with formal training in these subjects and find any of the methods/principles discussed here are a bad idea, instead of a subtweet or a snide remark, I'd appreciate if you can file an issue (<https://github.com/IndrajeetPatil/Refactoring-ggstatsplot/issues>), so that I can flag the respective content with a warning.]
+.footnote[<sup>*</sup>If you are someone with formal training in these subjects and find any of the methods/principles discussed here are a bad idea, I'd appreciate if you file an issue (<https://github.com/IndrajeetPatil/Refactoring-ggstatsplot/issues>).]
 
 ---
 
