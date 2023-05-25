@@ -416,13 +416,13 @@ class: inverse, center, middle
 
 .font100[
 
-[`r emo::ji("bird")` @patilindrajeets](http://twitter.com/patilindrajeets)
+[🐦 @patilindrajeets](http://twitter.com/patilindrajeets)
 
-[`r emo::ji("computer")` @IndrajeetPatil](http://github.com/IndrajeetPatil)  
+[💻 @IndrajeetPatil](http://github.com/IndrajeetPatil)
 
-[`r emo::ji("link")` https://sites.google.com/site/indrajeetspatilmorality/](https://sites.google.com/site/indrajeetspatilmorality/)  
+[🔗 https://sites.google.com/site/indrajeetspatilmorality/](https://sites.google.com/site/indrajeetspatilmorality/)
 
-[`r emo::ji("mail")` patilindrajeet.science@gmail.com](mailto:patilindrajeet.science@gmail.com)
+[📧 patilindrajeet.science@gmail.com](mailto:patilindrajeet.science@gmail.com)
 
 ]
 
