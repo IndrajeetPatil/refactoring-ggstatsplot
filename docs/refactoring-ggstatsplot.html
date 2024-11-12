@@ -21,7 +21,7 @@ class: center, middle, inverse, title-slide
 # Lessons learned while refactoring {ggstatsplot} 📦
 ]
 .subtitle[
-## Going from 20K to ~1.5K lines of code
+## Going from 20K to 1K lines of code
 ]
 .author[
 ### Indrajeet Patil
@@ -125,7 +125,7 @@ During refactoring:
 - Inside function body, all unnecessary assignments were avoided. A new object was created only if it was used in more than one place.
 
 
-```r
+``` r
 # before: 4 lines of code
 x_vec &lt;- data %&gt;% dplyr::pull({{ x }})
 x_bw &lt;- (max(x_vec) - min(x_vec)) / sqrt(length(x_vec))
@@ -150,7 +150,7 @@ As much as possible, don't use complex, nested conditional statements.
 
 .pull-left[
 
-```r
+``` r
 # before: 7 lines of code
 if (type == "p") {
   if (paired) {
@@ -164,7 +164,7 @@ if (type == "p") {
 
 .pull-right[
 
-```r
+``` r
 # take-1
 # after: 4 lines of code
 if (type == "p") {
@@ -177,7 +177,7 @@ if (type == "p") {
 But, `ifelse` is fine!
 
 
-```r
+``` r
 # take-2
 # after: 1 line of code
 if (type == "p") test &lt;- ifelse(paired, "Student's t", "Welch's t")
@@ -229,7 +229,7 @@ R is a [functional language](https://adv-r.hadley.nz/fp.html) and you can take a
 
 .pull-left[
 
-```r
+``` r
 # before: 15 lines of code
 foo &lt;- function(a, b, type) {
   stopifnot(type %in% c("p", "np"))
@@ -255,7 +255,7 @@ foo &lt;- function(a, b, type) {
 
 .pull-right[
 
-```r
+``` r
 # after: 10 lines of code
 foo &lt;- function(a, b, type) {
   stopifnot(type %in% c("p", "np"))
@@ -283,7 +283,7 @@ If a used function has a large number of arguments that you wish the user could 
 
 .pull-left[
 
-```r
+``` r
 # before: 8 lines of code
 foo &lt;- function(data) {
   ggplot(data, aes(wt, mpg)) +
@@ -300,7 +300,7 @@ foo &lt;- function(data) {
 
 .pull-right[
 
-```r
+``` r
 # after: 2 lines of code
 foo &lt;- function(data,
                 point.args = list(
@@ -332,7 +332,7 @@ The following might be considered **bad coding practices** by some practitioners
 See: &lt;https://magrittr.tidyverse.org/reference/compound.html&gt;
 
 
-```r
+``` r
 # before: 2 lines of code
 df &lt;- df %&gt;%
   mutate(c = a + b)
@@ -346,7 +346,7 @@ df %&lt;&gt;% mutate(c = a + b)
 See: &lt;https://rdrr.io/cran/zeallot/man/operator.html&gt;
 
 
-```r
+``` r
 # before: 3 lines of code
 x &lt;- 1
 y &lt;- "b"
@@ -375,12 +375,6 @@ Struggles that define you
 
 ---
 
-class: inverse, center, middle
-
-# Resources
-
----
-
 ### Tools
 
 None of this would have been possible without the following excellent tools/services:
@@ -398,20 +392,6 @@ None of this would have been possible without the following excellent tools/serv
 For a more comprehensive list of tools for R package development, see [this](https://github.com/IndrajeetPatil/awesome-r-pkgtools/blob/master/README.md).
 
 .footnote[&lt;sup&gt;*&lt;/sup&gt;I don't use these anymore in favor of github-actions, but before github-actions arrived on the scene, these continuous integration services were essential part of my workflow.]
-
----
-
-### Videos
-
-&lt;iframe width="400" height="280" src="https://www.youtube.com/embed/7oyiPBjLAWY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
-
-&lt;iframe width="400" height="280" src="https://www.youtube.com/embed/D4auWwMsEnY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
-
----
-
-### Books
-
-&lt;img src="images/books.jpeg" width="100%" /&gt;
 
 ---
 

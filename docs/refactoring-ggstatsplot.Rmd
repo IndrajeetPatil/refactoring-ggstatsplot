@@ -1,8 +1,8 @@
 ---
 title: "Lessons learned while refactoring {ggstatsplot} 📦"
-subtitle: "Going from 20K to ~1.5K lines of code"
+subtitle: "Going from 20K to 1K lines of code"
 author: "Indrajeet Patil"
-date: "`r Sys.Date()`"
+date: "2023-10-27"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -366,12 +366,6 @@ Struggles that define you
 
 ---
 
-class: inverse, center, middle
-
-# Resources
-
----
-
 ### Tools
 
 None of this would have been possible without the following excellent tools/services:
@@ -389,22 +383,6 @@ None of this would have been possible without the following excellent tools/serv
 For a more comprehensive list of tools for R package development, see [this](https://github.com/IndrajeetPatil/awesome-r-pkgtools/blob/master/README.md).
 
 .footnote[<sup>*</sup>I don't use these anymore in favor of github-actions, but before github-actions arrived on the scene, these continuous integration services were essential part of my workflow.]
-
----
-
-### Videos
-
-<iframe width="400" height="280" src="https://www.youtube.com/embed/7oyiPBjLAWY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-<iframe width="400" height="280" src="https://www.youtube.com/embed/D4auWwMsEnY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
----
-
-### Books
-
-```{r, echo=FALSE}
-knitr::include_graphics("images/books.jpeg")
-```
 
 ---
 
