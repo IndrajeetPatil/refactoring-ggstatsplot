@@ -398,7 +398,7 @@ class: inverse, center, middle
 
 [💻 @IndrajeetPatil](http://github.com/IndrajeetPatil)
 
-[🔗 https://sites.google.com/site/indrajeetspatilmorality/](https://sites.google.com/site/indrajeetspatilmorality/)
+[🔗 https://indrajeetpatil.github.io/](https://indrajeetpatil.github.io/)
 
 [📧 patilindrajeet.science@gmail.com](mailto:patilindrajeet.science@gmail.com)
 
