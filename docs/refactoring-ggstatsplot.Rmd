@@ -36,7 +36,7 @@ The Unbearable Heaviness of Software
 
 ### What does the software do?
 
-You don't need to know much about `{ggstatsplot}` to follow these slides, except that it produces `ggplot2` plots with statistical analysis embedded in the plot. For more information, see these [slides](https://indrajeetpatil.github.io/ggstatsplot_slides/slides/ggstatsplot_presentation.html#1). Here is an example plot:
+You don't need to know much about `{ggstatsplot}` to follow these slides, except that it produces `ggplot2` plots with statistical analysis embedded in the plot. For more information, see these [slides](https://www.indrapatil.com/ggstatsplot_slides/slides/ggstatsplot_presentation.html#1). Here is an example plot:
 
 ```{r, echo=FALSE, out.width="60%", fig.width=8}
 library(ggstatsplot)
@@ -191,8 +191,8 @@ East India Company style of coding
 ### Break a big package into smaller packages
 
 To facilitate maintenance of the package, it was broken into two packages-
-- [`ggstatsplot`](https://indrajeetpatil.github.io/ggstatsplot/): all things **graphics**
-- [`statsExpressions`](https://indrajeetpatil.github.io/statsExpressions/): all things **statistics**
+- [`ggstatsplot`](https://www.indrapatil.com/ggstatsplot/): all things **graphics**
+- [`statsExpressions`](https://www.indrapatil.com/statsExpressions/): all things **statistics**
 
 This makes adding new functionality much easier, since graphical functions can be prepared even if statistical backend isn't ready, and vice versa.
 
@@ -398,7 +398,7 @@ class: inverse, center, middle
 
 [💻 @IndrajeetPatil](http://github.com/IndrajeetPatil)
 
-[🔗 https://indrajeetpatil.github.io/](https://indrajeetpatil.github.io/)
+[🔗 https://www.indrapatil.com/](https://www.indrapatil.com/)
 
 [📧 patilindrajeet.science@gmail.com](mailto:patilindrajeet.science@gmail.com)
 
